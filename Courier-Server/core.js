@@ -12,6 +12,20 @@ io.on('connection', (socket) => {
   });
 });
 
+io.on('connection', (socket) => {
+  socket.on('omsg', (msg) => {
+    this.activeUsers.forEach()
+    {
+      
+    }
+  });
+});
+
+function getUser(sockitID)
+{
+activeUsers.
+}
+
 http.listen(8080, () => {
   console.log('listening on *:3000');
 });

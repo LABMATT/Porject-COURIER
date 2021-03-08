@@ -1,14 +1,13 @@
 import io.socket.client.Socket;
-import io.socket.emitter.Emitter;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SendMessage {
 
     private final Socket socket;
     private final String userID;
-    private String[] ms;
+    private ArrayList<String> ms = new ArrayList<>();
 
     public SendMessage(Socket socket,String userid) {
         this.socket = socket;
@@ -31,14 +30,28 @@ public class SendMessage {
             this.socket.emit("msg", (Object) new String[]{userID, rawMsg});
             System.out.println("message is: " + rawMsg);
 
-            String ot = rec();
+            if(ms.size() > 0)
+            {
+                for(String s : rec())
+                {
+                    System.out.println(s);
+                }
+
+                ms.clear();
+            }
+
         }
     }
 
-    public String rec()
+    public ArrayList<String> rec()
     {
-        socket.on("details", args -> {ms = (String[]) args;});
-        return Arrays.toString(ms);
+        socket.on("inboundmsg", args -> {
 
+            for (Object m: args) {
+                ms.add(String.valueOf(args));
+            }
+        });
+
+        return ms;
     }
 }
